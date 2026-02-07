@@ -101,15 +101,15 @@ const userSchema = new Schema({
   },
 });
 
-userSchema.index(
-  { mobile: 1 },
-  {
-    unique: true,
-    partialFilterExpression: {
-      mobile: { $exists: true, $ne: null },
-    },
-  },
-);
+// userSchema.index(
+//   { mobile: 1 },
+//   {
+//     unique: true,
+//     partialFilterExpression: {
+//       mobile: { $exists: true, $ne: null },
+//     },
+//   },
+// );
 
 userSchema.methods.getVerifiedPassword = async function (passwordInputByUser) {
   const user = this;
@@ -122,6 +122,7 @@ userSchema.methods.getVerifiedPassword = async function (passwordInputByUser) {
 
   return validPassword;
 };
+
 userSchema.methods.getJWT = async function () {
   const user = this;
   // console.log("method: ", user);

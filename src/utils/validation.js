@@ -33,7 +33,34 @@ const validateLoginData = (req) => {
   }
 };
 
+const validateEditProfileData = (req) => {
+  const allowedEditFields = [
+    "firstName",
+    "lastName",
+    "age",
+    "photoUrl",
+    "mobile",
+    "address",
+    "houseNumber",
+    "colony",
+    "village",
+    "mandal",
+    "district",
+    "pincode",
+  ];
+  const isUpdateAllowed = Object.keys(req.body).every((key) =>
+    allowedEditFields.includes(key),
+  );
+  console.log(isUpdateAllowed);
+
+  if (!isUpdateAllowed) {
+    throw new Error("You are not allowed to this fields or Enter correct data");
+  }
+  return isUpdateAllowed;
+};
+
 module.exports = {
   validateSignupData,
   validateLoginData,
+  validateEditProfileData,
 };

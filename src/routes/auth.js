@@ -52,7 +52,7 @@ router.post("/signup", async (req, res, next) => {
     res.cookie("token", token, {
       expires: new Date(Date.now() + 8 * 3600000),
     });
-    res.status(200).json({
+    res.status(201).json({
       message: "user created successfuly.",
       data: savedUser,
       userId: savedUser._id,
