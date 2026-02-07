@@ -1,8 +1,18 @@
 const express = require("express");
-const { dbName, ConnectDB } = require("./config/database");
 const app = express();
 
+const { dbName, ConnectDB } = require("./config/database");
+const cookieParser = require("cookie-parser");
+
+app.use(express.json()); // to read req.body
+app.use(cookieParser());
+
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+
 const PORT = 7777;
+app.use("/", authRouter);
+app.use("/", profileRouter);
 
 const startServer = async () => {
   try {
