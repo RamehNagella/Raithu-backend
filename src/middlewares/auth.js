@@ -22,6 +22,7 @@ const userAuth = async (req, res, next) => {
     const { _id } = decodedToken;
 
     const user = await User.findById(_id);
+    console.log("user: ", user._id, user.firstName);
 
     // attach this user document to the req so that for every api we can get access
     req.user = user;

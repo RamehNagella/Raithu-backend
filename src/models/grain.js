@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose.Schema;
 const validator = require("validator");
 //the products which we will display on the page not users
-const productSchema = new mongoose.Schema(
+const grainSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -36,7 +36,7 @@ const productSchema = new mongoose.Schema(
     //     },
     //   },
     // ],
-    images: [
+    photo: [
       {
         url: {
           type: String,
@@ -49,13 +49,16 @@ const productSchema = new mongoose.Schema(
         source: {
           type: String,
           enum: ["mobile", "web"],
+          required: true,
         },
+        _id: false,
       },
     ],
     price: {
-      type: Number,
+      type: mongoose.Schema.Types.Decimal128,
       required: true,
       min: 0,
+      get: (v) => Number(v.toString()),
     },
     unit: {
       type: String,
@@ -72,11 +75,18 @@ const productSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    sellerName: {
+      type: String,
+      ref: "User",
+      required: true,
+    },
     location: {
+      houseNumber: String,
+      colony: String,
       village: String,
       mandal: String,
       district: String,
-      state: String,
+      pincode: String,
     },
     qualityGrade: {
       type: Number,
@@ -95,10 +105,13 @@ const productSchema = new mongoose.Schema(
       {
         price: Number,
         date: Date,
+        _id: false,
       },
     ],
   },
   { timestamps: true },
 );
 
-module.exports = mongoose.model("Product", productSchema);
+grainSchema.set("toJSON", { getter: true });
+
+module.exports = mongoose.model("Grain", grainSchema);
