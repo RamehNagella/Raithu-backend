@@ -10,12 +10,14 @@ app.use(cookieParser());
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const grainRouter = require("./routes/grains");
+const orderRouter = require("./routes/order");
 
 const PORT = 7777;
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", grainRouter);
+app.use("/", orderRouter);
 
 const startServer = async () => {
   try {

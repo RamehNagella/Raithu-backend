@@ -68,7 +68,7 @@ const grainSchema = new mongoose.Schema(
     availableQuantity: {
       type: Number,
       required: true,
-      min: 0,
+      min: [0, "Stock cannot be negative"],
     },
     sellerId: {
       type: mongoose.Schema.Types.ObjectId,

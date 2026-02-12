@@ -42,6 +42,11 @@ const userSchema = new Schema({
       }
     },
   },
+  role: {
+    type: String,
+    enum: ["user", "admin"],
+    default: "user",
+  },
   age: {
     type: Number,
     min: 15,
@@ -130,6 +135,7 @@ userSchema.methods.getJWT = async function () {
   const token = jwt.sign(
     {
       _id: user._id,
+      role: user.role, //add role
     },
     "Ramesh@$Raithu",
     { expiresIn: "7d" },

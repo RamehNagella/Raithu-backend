@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 const orderSchema = new mongoose.Schema(
   {
@@ -14,10 +15,16 @@ const orderSchema = new mongoose.Schema(
           ref: "Product",
           required: true,
         },
+        productImageUrl: String,
         productName: String,
         quantity: Number,
         unit: String, //Kg /quintal
         pricePerUnit: Number,
+        status: {
+          type: String,
+          enum: ["PLACED", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"],
+          default: "PLACED",
+        },
       },
     ],
     totalAmount: {
@@ -26,7 +33,7 @@ const orderSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["PLACED", "DELIVERED", "CANCELLED"],
+      enum: ["PLACED", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"],
     },
   },
   { timestamps: true },
