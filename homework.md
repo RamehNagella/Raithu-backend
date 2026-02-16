@@ -162,3 +162,15 @@ Set up CI/CD flow for AWS
 Map branches → environments (dev / prod)
 
 Just tell me what’s next 🚀
+##
+
+git checkout feature/orders
+git push -u origin feature/orders
+
+git checkout dev
+git pull origin dev
+git merge feature/orders
+git push origin dev
+
+git branch -d feature/orders
+git push origin --delete feature/orders

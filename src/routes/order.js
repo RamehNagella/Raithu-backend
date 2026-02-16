@@ -449,7 +449,7 @@ const statusFlow = {
   DELIVERED: [],
   CANCELLED: [],
 };
-
+//check the status of the order and move status forward or backward
 router.patch(
   "/orders/:orderId/status",
   userAuth,
