@@ -72,7 +72,11 @@ router.patch("/profile/password", userAuth, async (req, res, next) => {
     if (!user) {
       throw new Error("User not found.");
     }
-    const { email, oldPassword, newPassword } = req.body;
+    const { emailId, oldPassword, newPassword } = req.body;
+
+    if (req.user.emailId !== emailId) {
+      throw new Error("Invalid emailId");
+    }
 
     //compare oldPassword with already stored password
     const isOldPwMatch = await bcrypt.compare(oldPassword, user.password);

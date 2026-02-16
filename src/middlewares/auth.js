@@ -9,12 +9,13 @@ const userAuth = async (req, res, next) => {
   try {
     const { token } = req.cookies;
     // console.log(token);
-
+    console.log(process.env.JWT_SECRET);
     if (!token) {
       return res.status(401).json("Please Login");
     }
 
-    const decodedToken = jwt.verify(token, "Ramesh@$Raithu");
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+
     if (!decodedToken) {
       throw new Error("Invalid token!");
     }

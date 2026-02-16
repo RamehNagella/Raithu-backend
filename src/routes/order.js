@@ -175,6 +175,11 @@ router.get("/orders/my-orders", userAuth, async (req, res, next) => {
       .skip(skip)
       .limit(limit);
 
+    if (orders.length === 0) {
+      return res
+        .status(403)
+        .json({ success: false, message: "You dont have orders yet." });
+    }
     // console.log("orders: ", orders);
     // console.log(JSON.stringify(orders, null, 2));
     const totalOrders = await Order.countDocuments({ userId });

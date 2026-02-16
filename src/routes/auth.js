@@ -26,7 +26,7 @@ router.post("/signup", async (req, res, next) => {
   // 1. generate token using jwt
   // 2. store token in cookie for automatic loggin from the webpage
   // 3. send the json responce
-  console.log(req.body);
+  // console.log(req.body);
 
   try {
     const { firstName, lastName, emailId, password } = req.body;
@@ -46,9 +46,9 @@ router.post("/signup", async (req, res, next) => {
 
     const savedUser = await user.save();
 
-    //directly loggin into application after signup
     const token = await savedUser.getJWT();
 
+    //directly loggin into application after signup
     res.cookie("token", token, {
       expires: new Date(Date.now() + 8 * 3600000),
     });

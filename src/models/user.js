@@ -130,14 +130,14 @@ userSchema.methods.getVerifiedPassword = async function (passwordInputByUser) {
 
 userSchema.methods.getJWT = async function () {
   const user = this;
-  // console.log("method: ", user);
+  console.log("method: ", user);
 
   const token = jwt.sign(
     {
       _id: user._id,
       role: user.role, //add role
     },
-    "Ramesh@$Raithu",
+    process.env.JWT_SECRET,
     { expiresIn: "7d" },
   );
   return token;

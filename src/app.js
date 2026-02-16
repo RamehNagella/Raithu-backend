@@ -1,7 +1,9 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
 
-const { dbName, ConnectDB } = require("./config/database");
+const { ConnectDB } = require("./config/database");
 const cookieParser = require("cookie-parser");
 
 app.use(express.json()); // to read req.body
@@ -12,8 +14,6 @@ const profileRouter = require("./routes/profile");
 const grainRouter = require("./routes/grains");
 const orderRouter = require("./routes/order");
 
-const PORT = 7777;
-
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", grainRouter);
@@ -22,14 +22,23 @@ app.use("/", orderRouter);
 const startServer = async () => {
   try {
     await ConnectDB();
-    console.log(`${dbName} name database connected!!`);
+    console.log(` database connected!!`);
 
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+    const server = app.listen(process.env.PORT, () => {
+      console.log(`Server running on port ${process.env.PORT}`);
+    });
+
+    // ✅ Attach error handler
+    server.on("error", (err) => {
+      if (err.code === "EADDRINUSE") {
+        console.error(`❌ Port ${process.env.PORT} is already in use!`);
+      } else {
+        console.error("❌ Server error:", err);
+      }
     });
   } catch (err) {
     console.error("Startup failed: ", err.message);
-    proecess.exit(1);
+    process.exit(1);
   }
 };
 
