@@ -72,7 +72,7 @@ router.post("/grain/add", userAuth, async (req, res, next) => {
 });
 
 // get the products
-router.get("/grain/grains", async (req, res, next) => {
+router.get("/grain", async (req, res, next) => {
   console.log("get grains products");
   // the prducts should be displayed for the UI weather user is logged in or not
   // get the products from the grains collection

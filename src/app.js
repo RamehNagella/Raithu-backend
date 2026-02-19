@@ -1,8 +1,17 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 
 const { dbName, ConnectDB } = require("./config/database");
 const cookieParser = require("cookie-parser");
+
+app.use(
+  cors({
+    // origin: "http://localhost:8081", //frontend url
+    origin: "*",
+    credentials: true,
+  }),
+);
 
 app.use(express.json()); // to read req.body
 app.use(cookieParser());
@@ -24,7 +33,7 @@ const startServer = async () => {
     await ConnectDB();
     console.log(`${dbName} name database connected!!`);
 
-    app.listen(PORT, () => {
+    app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server running on port ${PORT}`);
     });
   } catch (err) {

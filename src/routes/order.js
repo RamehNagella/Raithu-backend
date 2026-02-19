@@ -174,6 +174,12 @@ router.get("/orders/my-orders", userAuth, async (req, res, next) => {
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
+    if (orders.length === 0) {
+      return res.status(500).json({
+        success: false,
+        message: "You don't have orders yet",
+      });
+    }
 
     // console.log("orders: ", orders);
     // console.log(JSON.stringify(orders, null, 2));
@@ -449,7 +455,7 @@ const statusFlow = {
   DELIVERED: [],
   CANCELLED: [],
 };
-//check the status of the order and move status forward or backward
+//check the status of the order and move status forward or backward only admin can do
 router.patch(
   "/orders/:orderId/status",
   userAuth,

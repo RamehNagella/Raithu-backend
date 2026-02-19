@@ -98,3 +98,7 @@ router.patch("/profile/password", userAuth, async (req, res, next) => {
   }
 });
 module.exports = router;
+
+/*
+read my backend code , and for that in the frontend directory  create a front end code according to  backend.  the url of the backend apis is http://localhost:7777/apis . this is like an ecommerse mobile app naming Raithu.  If I open the app  1. I 1.want to see app logo and its related images on the head of the page 2. i want to scrolling type ui to see the grain products stored in db using backend/src/models/grain.js schema and backend/src/countrollers/grain.js  3. in the webpage i just wants to see loggin user image in the round circle  at the top right corner of the mobile page at the home page right corner side, 3. in the body page i want to see all the images of the products for each product i want to see action buttons for buy and details when user click on these buttons the backend apis triggers accoridng to that you insert the apiendpoint addresses according to that everything i wrote. upto this write required code in the raithu/frontend directory follow the backend structure for creating and files and modules Dont distrub backend code code now write code using react framework and its libraries you can use html css javascript if there is any need, I wil just use command npm install and npm start then it should work? dont distrub or overwrite anything in backend folder?
+*/
