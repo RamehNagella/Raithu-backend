@@ -9,7 +9,7 @@ const userAuth = async (req, res, next) => {
   try {
     const { token } = req.cookies;
     // console.log(token);
-    console.log(process.env.JWT_SECRET);
+    // console.log(process.env.JWT_SECRET);
     if (!token) {
       return res.status(401).json("Please Login");
     }

@@ -47,7 +47,7 @@ router.post("/signup", async (req, res, next) => {
     const savedUser = await user.save();
 
     const token = await savedUser.getJWT();
-
+    console.log("signuptoken: ", token);
     //directly loggin into application after signup
     res.cookie("token", token, {
       expires: new Date(Date.now() + 8 * 3600000),
@@ -100,12 +100,15 @@ router.post("/login", async (req, res, next) => {
     //   { expiresIn: "7d" },
     // );
     const token = await user.getJWT();
-    // console.log("token: ", token);
 
     //Store the jwt token  in cookie(for better safety)
     res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
       expires: new Date(Date.now() + 8 * 3600000),
     });
+    // console.log("cookie set: ", res.cookie, res.headersSent);
     //send the  cookie to store in the browser.
     res.status(200).json({
       message: `${user.firstName} you loggedIn`,

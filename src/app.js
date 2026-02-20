@@ -3,9 +3,16 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 
+const cors = require("cors");
 const { ConnectDB } = require("./config/database");
 const cookieParser = require("cookie-parser");
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+); // Enable CORS for all routes
 app.use(express.json()); // to read req.body
 app.use(cookieParser());
 
