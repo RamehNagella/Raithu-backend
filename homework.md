@@ -162,6 +162,7 @@ Set up CI/CD flow for AWS
 Map branches → environments (dev / prod)
 
 Just tell me what’s next 🚀
+
 ##
 
 git checkout feature/orders
@@ -174,3 +175,55 @@ git push origin dev
 
 git branch -d feature/orders
 git push origin --delete feature/orders
+
+# add this code to grains.js file
+
+in this route
+router.get("/grain/grains", async (req, res, next) => {...})
+
+    const grains = await Grain.find(query)
+      .sort({ _id: -1 }) //newest first
+      .limit(limit)
+      .select(
+        "name price unit photo description grainType variety harvestDate isOrganic availableQuantity createdAt",
+      )
+      .lean();
+    if (!grains?.length > 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No grain products found",
+      });
+    }
+
+update auth.js file code to
+
+router.post("/logout", (req, res, next) => {
+res.clearCookie("token", {
+httpOnly: true,
+// secure: process.env.NODE_ENV === "production",
+secure: true,
+sameSite: "lax",
+});
+
+res.status(200).json({
+message: "Logged out successfully.",
+});
+});
+
+in post("/login")
+res.cookie("token", token, {
+httpOnly: true,
+
+<!-- secure: true, //works only on https -->
+
+sameSite: "lax",
+expires: new Date(Date.now() + 8 \* 3600000),
+});
+
+in post("/signup)
+res.cookie("token", token, {
+httpOnly: true,
+// secure: true, //works only on https
+sameSite: "lax",
+expires: new Date(Date.now() + 8 \* 3600000),
+});

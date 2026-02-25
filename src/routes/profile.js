@@ -10,6 +10,7 @@ const bcrypt = require("bcrypt");
 //get the user profile
 router.get("/profile/view", userAuth, async (req, res, next) => {
   const user = req.user;
+
   try {
     res.status(200).json({
       message: user.firstName + " your data is here",

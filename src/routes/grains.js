@@ -97,9 +97,15 @@ router.get("/grain/grains", async (req, res, next) => {
       .sort({ _id: -1 }) //newest first
       .limit(limit)
       .select(
-        "name price unit grainType variety harvestDate isOrganic availableQuantity createdAt",
+        "name price unit photo description grainType variety harvestDate isOrganic availableQuantity createdAt",
       )
       .lean();
+    if (!grains?.length > 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No grain products found",
+      });
+    }
 
     // console.log(">>", grains);
 

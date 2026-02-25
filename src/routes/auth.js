@@ -50,6 +50,9 @@ router.post("/signup", async (req, res, next) => {
     console.log("signuptoken: ", token);
     //directly loggin into application after signup
     res.cookie("token", token, {
+      httpOnly: true,
+      // secure: true, //works only on https
+      sameSite: "lax",
       expires: new Date(Date.now() + 8 * 3600000),
     });
     res.status(201).json({
@@ -104,7 +107,7 @@ router.post("/login", async (req, res, next) => {
     //Store the jwt token  in cookie(for better safety)
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
+      // secure: true, //works only on https
       sameSite: "lax",
       expires: new Date(Date.now() + 8 * 3600000),
     });
@@ -133,11 +136,12 @@ router.post("/logout", (req, res, next) => {
     httpOnly: true,
     // secure: process.env.NODE_ENV === "production",
     secure: true,
-    sameSite: "strict",
+    sameSite: "lax",
   });
 
   res.status(200).json({
     message: "Logged out successfully.",
   });
 });
+
 module.exports = router;
