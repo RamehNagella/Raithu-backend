@@ -130,6 +130,8 @@ userSchema.methods.getVerifiedPassword = async function (passwordInputByUser) {
 
 userSchema.methods.getJWT = async function () {
   const user = this;
+  console.log("method: ", user.firstName, user.emailId);
+
   // console.log("method: ", user);
 
   const token = jwt.sign(
@@ -137,11 +139,21 @@ userSchema.methods.getJWT = async function () {
       _id: user._id,
       role: user.role, //add role
     },
-    "Ramesh@$Raithu",
+    process.env.JWT_SECRET,
     { expiresIn: "7d" },
   );
   return token;
 };
+
+userSchema.set("toJSON", {
+  transform: function (doc, ret) {
+    delete ret.password;
+    delete ret.__v;
+    delete ret.mobile;
+
+    return ret;
+  },
+});
 
 /*
 Alternative (simpler & very common)

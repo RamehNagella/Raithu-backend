@@ -3,9 +3,10 @@ const mongoose = require("mongoose");
 const dbName = "raithu";
 
 const ConnectDB = async () => {
-  mongoose.connect(
-    `mongodb+srv://Admin_raithu_mobile:u3xWQgj7lpvjXJC3@raithucluster.jgt8r7k.mongodb.net/${dbName}?appName=raithuCluster`,
-  );
+  // mongoose.connect(
+  //   `mongodb+srv://Admin_raithu_mobile:u3xWQgj7lpvjXJC3@raithucluster.jgt8r7k.mongodb.net/${dbName}?appName=raithuCluster`,
+  // );
+  await mongoose.connect(process.env.DB_CONNECTION_STRING);
 };
 
 module.exports = { dbName, ConnectDB };

@@ -72,7 +72,7 @@ router.post("/grain/add", userAuth, async (req, res, next) => {
 });
 
 // get the products
-router.get("/grain", async (req, res, next) => {
+router.get("/grain/grains", async (req, res, next) => {
   console.log("get grains products");
   // the prducts should be displayed for the UI weather user is logged in or not
   // get the products from the grains collection
@@ -97,11 +97,17 @@ router.get("/grain", async (req, res, next) => {
       .sort({ _id: -1 }) //newest first
       .limit(limit)
       .select(
-        "name price unit grainType variety harvestDate isOrganic availableQuantity createdAt",
+        "name price unit photo description grainType variety harvestDate isOrganic availableQuantity createdAt",
       )
       .lean();
 
     // console.log(">>", grains);
+    if (!grains?.length > 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No grain products found",
+      });
+    }
 
     res.status(200).json({
       success: true,

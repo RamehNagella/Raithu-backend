@@ -1,3 +1,4 @@
+requrie("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -8,10 +9,10 @@ const cookieParser = require("cookie-parser");
 app.use(
   cors({
     // origin: "http://localhost:8081", //frontend url
-    origin: "*",
+    origin: "http://localhost:5173",
     credentials: true,
   }),
-);
+); // Enable CORS for all routes
 
 app.use(express.json()); // to read req.body
 app.use(cookieParser());
@@ -33,8 +34,15 @@ const startServer = async () => {
     await ConnectDB();
     console.log(`${dbName} name database connected!!`);
 
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`Server running on port ${PORT}`);
+    const server = app.listen(process.env.PORT, () => {
+      console.log(`Server running on port ${process.env.PORT}`);
+    });
+    server.on("error", (err) => {
+      if (err.code === "EADDRINUSE") {
+        console.error(`❌ Port ${process.env.PORT} is already in use!`);
+      } else {
+        console.error("❌ Server error:", err);
+      }
     });
   } catch (err) {
     console.error("Startup failed: ", err.message);

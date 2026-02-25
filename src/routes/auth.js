@@ -26,7 +26,7 @@ router.post("/signup", async (req, res, next) => {
   // 1. generate token using jwt
   // 2. store token in cookie for automatic loggin from the webpage
   // 3. send the json responce
-  console.log(req.body);
+  // console.log(req.body);
 
   try {
     const { firstName, lastName, emailId, password } = req.body;
@@ -50,6 +50,9 @@ router.post("/signup", async (req, res, next) => {
     const token = await savedUser.getJWT();
 
     res.cookie("token", token, {
+      httpOnly: true,
+      // secure:true  //works only on https
+      sameSite: "lax",
       expires: new Date(Date.now() + 8 * 3600000),
     });
     res.status(201).json({
@@ -104,6 +107,9 @@ router.post("/login", async (req, res, next) => {
 
     //Store the jwt token  in cookie(for better safety)
     res.cookie("token", token, {
+      httpOnly: true,
+      // secure: true, //works only on https
+      sameSite: "lax",
       expires: new Date(Date.now() + 8 * 3600000),
     });
     //send the  cookie to store in the browser.
@@ -130,7 +136,7 @@ router.post("/logout", (req, res, next) => {
     httpOnly: true,
     // secure: process.env.NODE_ENV === "production",
     secure: true,
-    sameSite: "strict",
+    sameSite: "lax",
   });
 
   res.status(200).json({
