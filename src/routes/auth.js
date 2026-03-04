@@ -61,7 +61,10 @@ router.post("/signup", async (req, res, next) => {
       userId: savedUser._id,
     });
   } catch (err) {
-    res.status(400).json({ Error: err.message });
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
   }
 });
 
@@ -114,6 +117,7 @@ router.post("/login", async (req, res, next) => {
     // console.log("cookie set: ", res.cookie, res.headersSent);
     //send the  cookie to store in the browser.
     res.status(200).json({
+      suceess: true,
       message: `${user.firstName} you loggedIn`,
       user,
     });

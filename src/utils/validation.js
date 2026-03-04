@@ -136,7 +136,6 @@ const validateGrainData = (req) => {
     "price",
     "unit",
     "availableQuantity",
-    "sellerId",
     "location",
     "isActive",
     "qualityGrade",
@@ -182,7 +181,7 @@ const validateGrainData = (req) => {
   if (!["kg", "quintal", "ton"].includes(req.body.unit)) {
     throw new Error("Invalid unit");
   }
-
+  req.body.availableQuantity = Number(req.body.availableQuantity);
   if (
     typeof req.body.availableQuantity !== "number" ||
     req.body.availableQuantity < 0
@@ -217,6 +216,7 @@ const validateGrainData = (req) => {
 const validateUpdateFields = (updateData, updateAllowedFields) => {
   // cleaner and simple version
   const updateKeys = Object.keys(updateData);
+  console.log(">>", updateKeys);
 
   const notAllowedFields = updateKeys.filter(
     (key) => !updateAllowedFields.includes(key),

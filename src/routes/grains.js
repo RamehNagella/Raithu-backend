@@ -99,15 +99,13 @@ router.get("/grain/grains", async (req, res, next) => {
       .select(
         "name price unit photo description grainType variety harvestDate isOrganic availableQuantity createdAt",
       )
-      .lean();
+      .lean({ getters: true });
     if (!grains?.length > 0) {
       return res.status(404).json({
         success: false,
         message: "No grain products found",
       });
     }
-
-    // console.log(">>", grains);
 
     res.status(200).json({
       success: true,
@@ -126,6 +124,38 @@ router.get("/grain/grains", async (req, res, next) => {
 //   { grainType: "sorghum" },
 // ];
 
+// get loggedIn user grains created by loggedIn user
+router.get("/grain/my-grains", userAuth, async (req, res, next) => {
+  // 1. get user Id from req.user
+  // 2. get the grains from "grains" from db
+  // 3. filters the grain which are created by loggedIn user
+  // By using sellerId and loggedInuserId
+  //then send the filtered grains to User
+
+  try {
+    const userId = req.user._id;
+
+    const grains = await Grain.find({ sellerId: userId });
+    if (!grains || grains?.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "You don't have your own grains yet",
+      });
+    }
+    res.json({
+      success: true,
+      message: "Fetched your own Grains",
+      count: grains.length,
+      data: grains,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "something went wrong",
+    });
+  }
+});
+
 //get the single grain
 router.get("/grain/:grainId", async (req, res, next) => {
   // get the product id from req.params
@@ -133,6 +163,7 @@ router.get("/grain/:grainId", async (req, res, next) => {
   // then send the response
   try {
     const { grainId } = req.params;
+    console.log("in single grain page");
 
     if (!mongoose.Types.ObjectId.isValid(grainId)) {
       return res.status(400).json({
@@ -176,6 +207,7 @@ router.patch("/grain/:grainId", userAuth, async (req, res, next) => {
   // send response
   try {
     const { grainId } = req.params;
+    console.log("req>>", req.body);
 
     if (!mongoose.Types.ObjectId.isValid(grainId)) {
       return res.status(400).json({
@@ -206,6 +238,7 @@ router.patch("/grain/:grainId", userAuth, async (req, res, next) => {
       "qualityGrade",
       "isOrganic",
       "isActive",
+      "harvestDate",
     ];
     // Check if user-given fields are allowed to update
 
@@ -340,8 +373,7 @@ router.delete("/grain/:grainId", userAuth, async (req, res, next) => {
   }
 });
 
-//
-
+// addd-to-cart functionality
 module.exports = router;
 
 /*

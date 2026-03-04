@@ -13,8 +13,9 @@ router.get("/profile/view", userAuth, async (req, res, next) => {
 
   try {
     res.status(200).json({
+      success: true,
       message: user.firstName + " your data is here",
-      user,
+      data: user,
     });
   } catch (err) {
     res.status(400).json({ ERROR: err.message });
@@ -49,11 +50,15 @@ router.patch("/profile/edit", userAuth, async (req, res, next) => {
     await loggedInUser.save();
 
     res.status(200).json({
+      success: true,
       message: `${loggedInUser.firstName} your profile was updated successfully.`,
-      loggedInUser,
+      data: loggedInUser,
     });
   } catch (err) {
-    res.status(400).json("Error: " + err.message);
+    res.status(400).json({
+      success: false,
+      message: "Error: " + err.message,
+    });
   }
 });
 
@@ -62,7 +67,7 @@ router.patch("/profile/password", userAuth, async (req, res, next) => {
   console.log("In the update password api");
   // 1. get the user entered emailId, old password and and new Password
   // 2. verify that they are in the db or not
-  // 3. validate the new password of stongness
+  // 3. validate the new password for stongness
   // 4. hash this password
   // 5. update the document with new password.
   // 5. save the user document
@@ -97,7 +102,10 @@ router.patch("/profile/password", userAuth, async (req, res, next) => {
 
     await user.save();
 
-    res.status(200).json({ message: "Password updated successfully." });
+    res.status(200).json({
+      success: false,
+      message: "Password updated successfully.",
+    });
   } catch (err) {
     res.status(400).json("Error: " + err.message);
   }

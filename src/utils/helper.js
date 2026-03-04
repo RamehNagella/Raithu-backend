@@ -20,12 +20,12 @@ const mapUserLocation = (address = {}) => {
 };
 
 const mapGrainToPublicResponse = (grain) => ({
-  id: grain._id,
+  _id: grain._id,
   name: grain.name,
   grainType: grain.grainType,
   variety: grain.variety,
   description: grain.description,
-  photos: grain.photo?.map((p) => p.url) || [],
+  photo: grain.photo?.map((p) => p.url) || [],
   price: Number(grain.price.toString()),
   unit: grain.unit,
   availableQuantity: grain.availableQuantity,

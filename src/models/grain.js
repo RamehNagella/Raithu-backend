@@ -23,19 +23,7 @@ const grainSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    // // images: {
-    // //   type: [String],
-    // //   default: [],
-    // // },
-    // images: [
-    //   {
-    //     url: String,
-    //     uploadedBy: {
-    //       type: String,
-    //       enum: ["mobile", "web"],
-    //     },
-    //   },
-    // ],
+
     photo: [
       {
         url: {
@@ -113,5 +101,7 @@ const grainSchema = new mongoose.Schema(
 );
 
 grainSchema.set("toJSON", { getter: true });
+//to read React object
+grainSchema.set("toObject", { getters: true });
 
 module.exports = mongoose.model("Grain", grainSchema);

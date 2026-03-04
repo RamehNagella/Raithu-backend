@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 const Grain = require("../models/grain");
 const Order = require("../models/order");
 const user = require("../models/user");
+const order = require("../models/order");
 
 //create order
 router.post("/orders/place-order", userAuth, async (req, res, next) => {
@@ -26,12 +27,16 @@ router.post("/orders/place-order", userAuth, async (req, res, next) => {
   try {
     const userId = req.user._id;
     const { items } = req.body;
+    // console.log("items>>", items);
 
     if (!Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ message: "Order items required." });
     }
     let totalAmount = 0;
     const orderItems = [];
+    if (!userId) {
+      return res.status(400).json({ success: false, message: "Please login" });
+    }
     /* for (const item of items) {
       //get the product from the db using productId send from the user
       const grainProduct = await Grain.findById(item.productId);
@@ -100,7 +105,13 @@ router.post("/orders/place-order", userAuth, async (req, res, next) => {
         },
         { new: true, session },
       );
-
+      if (userId.toString() === updatedProduct.sellerId.toString()) {
+        return res.status(403).json({
+          success: false,
+          message:
+            "You cannot Order your own Grain. You already have at home.🤗",
+        });
+      }
       // If update failed either product doesn't exit or stock is over
       if (!updatedProduct) {
         return res.status(400).json({
@@ -112,14 +123,16 @@ router.post("/orders/place-order", userAuth, async (req, res, next) => {
       // const itemTotal = pricePerUnit * item.quantity;
       // totalAmount += itemTotal;
       totalAmount += updatedProduct.price * item.quantity;
-
+      // console.log(updatedProduct.unit);
       orderItems.push({
         productId: updatedProduct._id,
         productName: updatedProduct.name,
         productImage: updatedProduct.photo[0].url,
         quantity: item.quantity,
+        unit: updatedProduct.unit,
         pricePerUnit: updatedProduct.price,
       });
+      // console.log("..", updatedProduct);
     }
 
     const order = await Order.create(
@@ -155,6 +168,7 @@ router.get("/orders/my-orders", userAuth, async (req, res, next) => {
   // get the orders from Orders collection using id
   // verify orders
   // do the pagination
+  console.log("in get my orders page");
 
   try {
     const userId = req.user._id;
@@ -314,11 +328,14 @@ router.patch("/orders/:orderId/cancel", userAuth, async (req, res, next) => {
     // here we can cancel entire order or we can cancel one item at a time
     // here we dont delete resourse but we change status of the order to cancel
     orderedProduct.status = "CANCELLED";
+    orderedProduct.totalAmount = 0;
 
     await orderedProduct.save();
 
     return res.status(200).json({
+      success: true,
       message: "Order cancelled successfully.",
+      data: order,
     });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
