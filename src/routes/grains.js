@@ -84,7 +84,7 @@ router.get("/grain/grains", async (req, res, next) => {
     // const grainTypes = await Grain.find({}, { _id: 0, grainType: 1 });
     // console.log(grainTypes);
 
-    const limit = Math.min(Number(req.query.limit) || 10, 50);
+    const limit = Math.min(Number(req.query.limit) || 35, 50);
     const { cursor } = req.query;
 
     const query = {};
@@ -106,6 +106,8 @@ router.get("/grain/grains", async (req, res, next) => {
         message: "No grain products found",
       });
     }
+
+    // console.log("total grains: ", grains);
 
     res.status(200).json({
       success: true,
@@ -135,13 +137,14 @@ router.get("/grain/my-grains", userAuth, async (req, res, next) => {
   try {
     const userId = req.user._id;
 
-    const grains = await Grain.find({ sellerId: userId });
+    const grains = await Grain.find({ sellerId: userId }).sort({ _id: -1 });
     if (!grains || grains?.length === 0) {
       return res.status(404).json({
         success: false,
         message: "You don't have your own grains yet",
       });
     }
+    // console.log("myne", grains);
     res.json({
       success: true,
       message: "Fetched your own Grains",

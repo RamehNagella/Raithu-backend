@@ -9,16 +9,28 @@ const bcrypt = require("bcrypt");
 
 //get the user profile
 router.get("/profile/view", userAuth, async (req, res, next) => {
-  const user = req.user;
-
   try {
+    const user = req.user;
+    const userId = req.user._id;
+
+    const userData = await User.findById(userId);
+
+    if (!userData) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
     res.status(200).json({
       success: true,
       message: user.firstName + " your data is here",
-      data: user,
+      data: userData,
     });
   } catch (err) {
-    res.status(400).json({ ERROR: err.message });
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
   }
 });
 
@@ -37,6 +49,7 @@ router.patch("/profile/edit", userAuth, async (req, res, next) => {
     }
 
     const loggedInUser = req.user;
+    // console.log("afterLoggediN", req.body);
 
     Object.keys(req.body).forEach((key) => {
       if (key === "address") {
@@ -44,15 +57,18 @@ router.patch("/profile/edit", userAuth, async (req, res, next) => {
           loggedInUser.address[innerKey] = req.body.address[innerKey];
         });
       }
+      // console.log(key, loggedInUser[key], typeof key);
+
       loggedInUser[key] = req.body[key];
     });
 
     await loggedInUser.save();
+    // console.log(">>", loggedInUser);
 
     res.status(200).json({
       success: true,
       message: `${loggedInUser.firstName} your profile was updated successfully.`,
-      data: loggedInUser,
+      data: loggedInUser.toObject(),
     });
   } catch (err) {
     res.status(400).json({

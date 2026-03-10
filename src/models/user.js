@@ -94,6 +94,10 @@ const userSchema = new Schema({
       type: String,
       trim: true,
     },
+    state: {
+      type: String,
+      trim: true,
+    },
     pincode: {
       type: String,
       validate(value) {
@@ -147,7 +151,6 @@ userSchema.set("toJSON", {
   transform: function (doc, ret) {
     delete ret.password;
     delete ret.__v;
-    delete ret.mobile;
 
     return ret;
   },

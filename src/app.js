@@ -20,11 +20,13 @@ const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const grainRouter = require("./routes/grains");
 const orderRouter = require("./routes/order");
+const cartRouter = require("./routes/cart");
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", grainRouter);
 app.use("/", orderRouter);
+app.use("/", cartRouter);
 
 const startServer = async () => {
   try {

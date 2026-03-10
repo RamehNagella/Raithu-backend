@@ -97,6 +97,7 @@ router.post("/login", async (req, res, next) => {
     if (!isPasswrodValid) {
       throw new Error("Invalid credientials.");
     }
+    // console.log("user:", user);
 
     // const token = jwt.sign(
     //   {
@@ -112,7 +113,7 @@ router.post("/login", async (req, res, next) => {
       httpOnly: true,
       // secure: true, //works only on https
       sameSite: "lax",
-      expires: new Date(Date.now() + 8 * 3600000),
+      expires: new Date(Date.now() + 8 * 24 * 3600000),
     });
     // console.log("cookie set: ", res.cookie, res.headersSent);
     //send the  cookie to store in the browser.

@@ -37,8 +37,8 @@ const validateEditProfileData = (req) => {
   const allowedEditFields = [
     "firstName",
     "lastName",
-    "age",
     "photoUrl",
+    "age",
     "mobile",
     "address",
     "houseNumber",
@@ -46,12 +46,14 @@ const validateEditProfileData = (req) => {
     "village",
     "mandal",
     "district",
+    "state",
     "pincode",
   ];
+  console.log("validation?>", req.body);
   const isUpdateAllowed = Object.keys(req.body).every((key) =>
     allowedEditFields.includes(key),
   );
-  console.log(isUpdateAllowed);
+  console.log("valid", isUpdateAllowed);
 
   if (!isUpdateAllowed) {
     throw new Error("You are not allowed to this fields or Enter correct data");
