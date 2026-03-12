@@ -73,7 +73,7 @@ router.post("/grain/add", userAuth, async (req, res, next) => {
 
 // get the products
 router.get("/grain/grains", async (req, res, next) => {
-  console.log("get grains products");
+  // console.log("get grains products");
   // the prducts should be displayed for the UI weather user is logged in or not
   // get the products from the grains collection
   // then exclude selledId, sellerName, location
@@ -166,7 +166,7 @@ router.get("/grain/:grainId", async (req, res, next) => {
   // then send the response
   try {
     const { grainId } = req.params;
-    console.log("in single grain page");
+    // console.log("in single grain page");
 
     if (!mongoose.Types.ObjectId.isValid(grainId)) {
       return res.status(400).json({
@@ -210,7 +210,7 @@ router.patch("/grain/:grainId", userAuth, async (req, res, next) => {
   // send response
   try {
     const { grainId } = req.params;
-    console.log("req>>", req.body);
+    // console.log("req>>", req.body);
 
     if (!mongoose.Types.ObjectId.isValid(grainId)) {
       return res.status(400).json({
@@ -312,7 +312,7 @@ router.get("/grain/:grainId/price_history", async (req, res, next) => {
   try {
     const grainPriceHistory =
       await Grain.findById(grainId).select("name priceHistory");
-    console.log(grainPriceHistory);
+    // console.log(grainPriceHistory);
 
     if (!grainPriceHistory || grainPriceHistory.length === 0) {
       return res.status(404).json({

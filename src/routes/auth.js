@@ -12,7 +12,7 @@ const {
 const User = require("../models/user");
 
 router.get("/test", (req, res, next) => {
-  console.log("get post");
+  // console.log("get post");
   res.send("hii");
 });
 
@@ -47,7 +47,7 @@ router.post("/signup", async (req, res, next) => {
     const savedUser = await user.save();
 
     const token = await savedUser.getJWT();
-    console.log("signuptoken: ", token);
+    // console.log("signuptoken: ", token);
     //directly loggin into application after signup
     res.cookie("token", token, {
       httpOnly: true,

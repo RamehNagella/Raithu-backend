@@ -36,7 +36,7 @@ router.get("/profile/view", userAuth, async (req, res, next) => {
 
 //update user profile
 router.patch("/profile/edit", userAuth, async (req, res, next) => {
-  console.log("In update page ");
+  // console.log("In update page ");
   // 1. get the user data from req.body
   //  ** when updating user data don't allow to update or modify user emailId and password
   // 3. varify and  validate the user entered data
@@ -80,7 +80,7 @@ router.patch("/profile/edit", userAuth, async (req, res, next) => {
 
 //update or reset password
 router.patch("/profile/password", userAuth, async (req, res, next) => {
-  console.log("In the update password api");
+  // console.log("In the update password api");
   // 1. get the user entered emailId, old password and and new Password
   // 2. verify that they are in the db or not
   // 3. validate the new password for stongness

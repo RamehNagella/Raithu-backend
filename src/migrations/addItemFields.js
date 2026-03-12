@@ -86,14 +86,14 @@ const { dbName, ConnectDB } = require("../config/database");
 async function migrate() {
   try {
     await ConnectDB();
-    console.log(`connected to ${dbName} db`);
+    // console.log(`connected to ${dbName} db`);
     const usersWithoutRole = await User.countDocuments({
       role: { $exists: false },
     });
-    console.log(`Found ${usersWithoutRole} users without role field`);
+    // console.log(`Found ${usersWithoutRole} users without role field`);
 
     if (usersWithoutRole === 0) {
-      console.log("No users need migration. Exiting.");
+      // console.log("No users need migration. Exiting.");
       process.exit(0);
     }
     const result = await User.updateMany(
@@ -102,10 +102,10 @@ async function migrate() {
         $set: { role: "user" },
       },
     );
-    console.log("Migration Success: ", result);
+    // console.log("Migration Success: ", result);
     process.exit();
   } catch (err) {
-    console.error("migraition failed: ", err.message);
+    // console.error("migraition failed: ", err.message);
     process.exit(1);
   }
 }

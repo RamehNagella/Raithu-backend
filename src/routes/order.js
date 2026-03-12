@@ -168,7 +168,7 @@ router.get("/orders/my-orders", userAuth, async (req, res, next) => {
   // get the orders from Orders collection using id
   // verify orders
   // do the pagination
-  console.log("in get my orders page");
+  // console.log("in get my orders page");
 
   try {
     const userId = req.user._id;

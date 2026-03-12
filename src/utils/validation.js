@@ -3,19 +3,19 @@ const validator = require("validator");
 const validateSignupData = (req) => {
   const { firstName, lastName, emailId, password } = req.body;
   if (!firstName || !lastName) {
-    console.log("1");
+    // console.log("1");
     // throw new Error("First name and last name are required.");
     return false;
   } else if (!validator.isEmail(emailId)) {
     // throw new Error("Email is not valid.");
-    console.log("3");
+    // console.log("3");
     return false;
   } else if (!validator.isStrongPassword(password)) {
     // throw new Error("please enter the strong password.");
     // console.log("4");
     return false;
   } else {
-    console.log("t");
+    // console.log("t");
 
     return true;
   }
@@ -49,11 +49,11 @@ const validateEditProfileData = (req) => {
     "state",
     "pincode",
   ];
-  console.log("validation?>", req.body);
+  // console.log("validation?>", req.body);
   const isUpdateAllowed = Object.keys(req.body).every((key) =>
     allowedEditFields.includes(key),
   );
-  console.log("valid", isUpdateAllowed);
+  // console.log("valid", isUpdateAllowed);
 
   if (!isUpdateAllowed) {
     throw new Error("You are not allowed to this fields or Enter correct data");
@@ -92,7 +92,7 @@ const validateGrainData = (req, res) => {
 
   //check only requried fields
   const missingFields = requriedFields.filter((field, i, arr) => {
-    // console.log(`${i + 1}: ${!req.body.hasOwnProperty(field)}`);
+    console.log(`${i + 1}: ${!req.body.hasOwnProperty(field)}`);
 
     return !req.body.hasOwnProperty(field);
   });
@@ -218,7 +218,7 @@ const validateGrainData = (req) => {
 const validateUpdateFields = (updateData, updateAllowedFields) => {
   // cleaner and simple version
   const updateKeys = Object.keys(updateData);
-  console.log(">>", updateKeys);
+  // console.log(">>", updateKeys);
 
   const notAllowedFields = updateKeys.filter(
     (key) => !updateAllowedFields.includes(key),

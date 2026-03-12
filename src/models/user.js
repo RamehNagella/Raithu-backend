@@ -26,7 +26,7 @@ const userSchema = new Schema({
 
     validate: {
       validator: function (value) {
-        console.log("Validating email: ", value);
+        // console.log("Validating email: ", value);
         return validator.isEmail(value);
       },
       message: (props) => `Invalid email: ${props.value}`,
@@ -134,7 +134,7 @@ userSchema.methods.getVerifiedPassword = async function (passwordInputByUser) {
 
 userSchema.methods.getJWT = async function () {
   const user = this;
-  console.log("method: ", user.firstName, user.emailId);
+  // console.log("method: ", user.firstName, user.emailId);
 
   const token = jwt.sign(
     {

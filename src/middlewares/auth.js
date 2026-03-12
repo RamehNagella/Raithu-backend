@@ -26,7 +26,7 @@ const userAuth = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({ message: "User not found" });
     }
-    console.log("user: ", user._id, user.firstName);
+    // console.log("user: ", user._id, user.firstName);
 
     // attach this user document to the req so that for every api we can get access
     req.user = user;

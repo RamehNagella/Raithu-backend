@@ -1,20 +1,23 @@
 const express = require("express");
 const userAuth = require("../middlewares/auth");
 const Cart = require("../models/cart");
+const Grain = require("../models/grain");
 const router = express.Router();
+const mongoose = require("mongoose");
 
 router.post("/cart/add", userAuth, async (req, res, next) => {
   const { productId } = req.body;
+  // console.log("//", req.body);
   const user = req.user;
   const userId = req.user._id;
-  console.log("1", productId);
+  // console.log("1", productId);
+  // console.log("1", userId);
   if (!productId) {
     return res.status(400).json({
       success: false,
       message: "ProductId is required",
     });
   }
-  const mongoose = require("mongoose");
 
   if (!mongoose.Types.ObjectId.isValid(productId)) {
     return res.status(400).json({
@@ -23,7 +26,16 @@ router.post("/cart/add", userAuth, async (req, res, next) => {
     });
   }
   try {
+    const grain = await Grain.findById(productId);
+
+    if (grain.sellerId.toString() === userId.toString()) {
+      return res.status(400).json({
+        success: false,
+        message: "Its your grain, You don't need to add to cart.",
+      });
+    }
     let cart = await Cart.findOne({ userId });
+    // console.log("ccc", cart);
 
     if (!cart) {
       cart = new Cart({
@@ -43,7 +55,7 @@ router.post("/cart/add", userAuth, async (req, res, next) => {
         cart.items.push({ productId, quantity: 1 });
       }
     }
-    console.log("2", cart);
+    // console.log("2", cart);
 
     const cartData = await cart.save();
 
@@ -66,7 +78,7 @@ router.get("/cart", userAuth, async (req, res, next) => {
     const cart = await Cart.findOne({ userId: req.user._id }).populate(
       "items.productId",
     );
-    console.log("get", cart);
+    // console.log("get", cart);
 
     res.status(200).json({
       success: true,
